@@ -22,8 +22,9 @@ function Calendar({ userId }: CalendarProps) {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-    // 모달 타입: 'view' (상세 보기) 또는 'add' (새 거래 추가)
-    const [modalType, setModalType] = useState<'view' | 'add' | null>(null);
+    // 모달 타입: 'view' (일별 보기), 'add' (새 거래 추가), 'monthly' (월별 보기)
+    const [modalType, setModalType] = useState<'view' | 'add' | 'monthly' | null>(null);
+    const [selectedStatType, setSelectedStatType] = useState<'income' | 'expense' | 'all'>('all');
 
     const [type, setType] = useState<'income' | 'expense'>('expense');
     const [amount, setAmount] = useState('');
@@ -179,15 +180,15 @@ function Calendar({ userId }: CalendarProps) {
         <div className="calendar-container">
             {/* 월별 통계 */}
             <div className="monthly-stats">
-                <div className="stat-card income">
+                <div className="stat-card income" onClick={() => { setSelectedStatType('income'); setModalType('monthly'); }}>
                     <div className="stat-label">수입</div>
                     <div className="stat-value">+{stats.income.toLocaleString()}원</div>
                 </div>
-                <div className="stat-card expense">
+                <div className="stat-card expense" onClick={() => { setSelectedStatType('expense'); setModalType('monthly'); }}>
                     <div className="stat-label">지출</div>
                     <div className="stat-value">-{stats.expense.toLocaleString()}원</div>
                 </div>
-                <div className="stat-card balance">
+                <div className="stat-card balance" onClick={() => { setSelectedStatType('all'); setModalType('monthly'); }}>
                     <div className="stat-label">잔액</div>
                     <div className="stat-value">{stats.balance.toLocaleString()}원</div>
                 </div>
@@ -377,6 +378,97 @@ function Calendar({ userId }: CalendarProps) {
                                 추가하기
                             </button>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* 모달 - 월별 전체 내역 */}
+            {modalType === 'monthly' && (
+                <div className="modal-overlay" onClick={() => setModalType(null)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>
+                                {year}년 {month + 1}월
+                                {selectedStatType === 'income' ? ' 수입 내역' :
+                                    selectedStatType === 'expense' ? ' 지출 내역' :
+                                        ' 전체 내역'}
+                            </h3>
+                            <button onClick={() => setModalType(null)} className="close-btn">✕</button>
+                        </div>
+
+                        {/* 월별 총액 */}
+                        {selectedStatType === 'all' && (
+                            <div className="day-total-summary">
+                                <div className="total-badge income">
+                                    <div className="total-label">총 수입</div>
+                                    <div className="total-amount">+{stats.income.toLocaleString()}원</div>
+                                </div>
+                                <div className="total-badge expense">
+                                    <div className="total-label">총 지출</div>
+                                    <div className="total-amount">-{stats.expense.toLocaleString()}원</div>
+                                </div>
+                            </div>
+                        )}
+
+                        {selectedStatType === 'income' && (
+                            <div className="day-total-summary">
+                                <div className="total-badge income" style={{flex: 'none', width: '100%'}}>
+                                    <div className="total-label">총 수입</div>
+                                    <div className="total-amount">+{stats.income.toLocaleString()}원</div>
+                                </div>
+                            </div>
+                        )}
+
+                        {selectedStatType === 'expense' && (
+                            <div className="day-total-summary">
+                                <div className="total-badge expense" style={{flex: 'none', width: '100%'}}>
+                                    <div className="total-label">총 지출</div>
+                                    <div className="total-amount">-{stats.expense.toLocaleString()}원</div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* 월별 거래 목록 */}
+                        <div className="existing-transactions">
+                            {(() => {
+                                const monthStart = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+                                const monthEnd = `${year}-${String(month + 1).padStart(2, '0')}-31`;
+                                let monthTransactions = transactions
+                                    .filter(t => t.date >= monthStart && t.date <= monthEnd);
+
+                                // 타입에 따라 필터링
+                                if (selectedStatType === 'income') {
+                                    monthTransactions = monthTransactions.filter(t => t.type === 'income');
+                                } else if (selectedStatType === 'expense') {
+                                    monthTransactions = monthTransactions.filter(t => t.type === 'expense');
+                                }
+
+                                monthTransactions = monthTransactions.sort((a, b) => b.date.localeCompare(a.date));
+
+                                if (monthTransactions.length === 0) {
+                                    return <div className="empty-state">
+                                        {selectedStatType === 'income' ? '수입 내역이 없습니다' :
+                                            selectedStatType === 'expense' ? '지출 내역이 없습니다' :
+                                                '거래 내역이 없습니다'}
+                                    </div>;
+                                }
+
+                                return monthTransactions.map(t => (
+                                    <div key={t.id} className="transaction-item">
+                                        <div>
+                                            <div className="transaction-category">{t.date.split('-')[2]}일 · {t.category}</div>
+                                            <div className="transaction-desc">{t.description}</div>
+                                        </div>
+                                        <div className="transaction-right">
+                      <span className={`transaction-amount ${t.type}`}>
+                        {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString()}원
+                      </span>
+                                            <button onClick={() => handleDelete(t.id)} className="delete-btn-small">삭제</button>
+                                        </div>
+                                    </div>
+                                ));
+                            })()}
+                        </div>
                     </div>
                 </div>
             )}
