@@ -222,13 +222,13 @@
     position: absolute;
     bottom: 28px;
     right: 28px;
-    width: 30px;
-    height: 30px;
+    width: 48px;
+    height: 48px;
     background: #495057;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 300;
     color: white;
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
@@ -600,8 +600,8 @@
     }
 
     .floating-add-btn {
-        width: 30px;
-        height: 30px;
+        width: 50px;
+        height: 50px;
         font-size: 24px;
         bottom: 22px;
         right: 22px;
