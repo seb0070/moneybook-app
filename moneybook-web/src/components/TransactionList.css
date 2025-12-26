@@ -1,13 +1,15 @@
 .transaction-list {
     background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .transaction-list h2 {
-    margin-bottom: 20px;
-    color: #333;
+    margin-bottom: 24px;
+    color: #1f2937;
+    font-size: 22px;
+    font-weight: 700;
 }
 
 .transaction-list ul {
@@ -18,65 +20,100 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #f0f0f0;
-    transition: background 0.2s;
+    padding: 20px;
+    border-bottom: 1px solid #f3f4f6;
+    transition: all 0.2s;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
 }
 
 .transaction-item:hover {
-    background: #f9f9f9;
+    background: linear-gradient(90deg, #f9fafb, #ffffff);
+    transform: translateX(4px);
 }
 
 .transaction-info {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
 }
 
 .category {
-    font-weight: bold;
-    color: #333;
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .description {
-    color: #666;
+    color: #6b7280;
     font-size: 14px;
 }
 
 .transaction-amount {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .transaction-amount .income {
     color: #10b981;
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 8px 16px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 10px;
 }
 
 .transaction-amount .expense {
     color: #ef4444;
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 8px 16px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 10px;
 }
 
 .delete-btn {
-    background: #fee;
+    background: #fef2f2;
     color: #ef4444;
-    border: 1px solid #fcc;
-    padding: 5px 10px;
-    border-radius: 5px;
+    border: 2px solid #fecaca;
+    padding: 8px 16px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
 }
 
 .delete-btn:hover {
-    background: #fcc;
+    background: #fee2e2;
+    border-color: #fca5a5;
+    transform: scale(1.05);
 }
 
 .empty-message {
     text-align: center;
-    color: #999;
-    padding: 40px;
+    color: #9ca3af;
+    padding: 60px 20px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .transaction-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .transaction-amount {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
