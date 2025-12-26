@@ -22,14 +22,18 @@ function Calendar({ userId }: CalendarProps) {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-    // 모달 타입: 'view' (일별 보기), 'add' (새 거래 추가), 'monthly' (월별 보기)
-    const [modalType, setModalType] = useState<'view' | 'add' | 'monthly' | null>(null);
+    // 모달 타입: 'view' (일별 보기), 'add' (새 거래 추가), 'monthly' (월별 보기), 'datePicker' (날짜 선택)
+    const [modalType, setModalType] = useState<'view' | 'add' | 'monthly' | 'datePicker' | null>(null);
     const [selectedStatType, setSelectedStatType] = useState<'income' | 'expense' | 'all'>('all');
 
     const [type, setType] = useState<'income' | 'expense'>('expense');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('식비');
     const [description, setDescription] = useState('');
+
+    // 날짜 선택용 state
+    const [tempYear, setTempYear] = useState(new Date().getFullYear());
+    const [tempMonth, setTempMonth] = useState(new Date().getMonth() + 1);
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -197,7 +201,9 @@ function Calendar({ userId }: CalendarProps) {
             {/* 캘린더 헤더 */}
             <div className="calendar-header">
                 <button onClick={prevMonth} className="nav-btn">◀</button>
-                <h2>{year}년 {month + 1}월</h2>
+                <h2 onClick={() => { setTempYear(year); setTempMonth(month + 1); setModalType('datePicker'); }} style={{cursor: 'pointer'}}>
+                    {year}년 {month + 1}월
+                </h2>
                 <button onClick={nextMonth} className="nav-btn">▶</button>
             </div>
 
@@ -468,6 +474,56 @@ function Calendar({ userId }: CalendarProps) {
                                     </div>
                                 ));
                             })()}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* 모달 - 날짜 선택 */}
+            {modalType === 'datePicker' && (
+                <div className="modal-overlay" onClick={() => setModalType(null)}>
+                    <div className="modal-content date-picker-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>날짜 이동</h3>
+                            <button onClick={() => setModalType(null)} className="close-btn">✕</button>
+                        </div>
+
+                        <div className="date-picker-content">
+                            <div className="date-picker-group">
+                                <label className="date-picker-label">년도</label>
+                                <select
+                                    value={tempYear}
+                                    onChange={(e) => setTempYear(parseInt(e.target.value))}
+                                    className="date-picker-select"
+                                >
+                                    {Array.from({ length: 11 }, (_, i) => new Date().getFullYear() - 5 + i).map(y => (
+                                        <option key={y} value={y}>{y}년</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className="date-picker-group">
+                                <label className="date-picker-label">월</label>
+                                <select
+                                    value={tempMonth}
+                                    onChange={(e) => setTempMonth(parseInt(e.target.value))}
+                                    className="date-picker-select"
+                                >
+                                    {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                                        <option key={m} value={m}>{m}월</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    setCurrentDate(new Date(tempYear, tempMonth - 1));
+                                    setModalType(null);
+                                }}
+                                className="date-picker-confirm-btn"
+                            >
+                                이동하기
+                            </button>
                         </div>
                     </div>
                 </div>
