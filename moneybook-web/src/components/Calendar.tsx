@@ -339,6 +339,8 @@ function Calendar({ userId }: CalendarProps) {
                                 onChange={(e) => setAmount(e.target.value)}
                                 placeholder="금액"
                                 className="modal-input"
+                                step="1000"
+                                min="0"
                                 required
                             />
 
