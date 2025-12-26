@@ -1,77 +1,69 @@
 .calendar-container {
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* 월별 통계 */
+/* 상단 요약 */
 .monthly-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
 .stat-card {
     background: white;
-    padding: 28px 24px;
-    border-radius: 20px;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     text-align: center;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-}
-
-.stat-card.income::before {
-    background: linear-gradient(90deg, #10b981, #34d399);
-}
-
-.stat-card.expense::before {
-    background: linear-gradient(90deg, #ef4444, #f87171);
-}
-
-.stat-card.balance::before {
-    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: all 0.3s;
+    border: 1px solid #e0e0e0;
 }
 
 .stat-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 .stat-label {
-    font-size: 13px;
-    color: #9ca3af;
-    margin-bottom: 10px;
+    font-size: 9px;
+    color: #666;
+    margin-bottom: 2px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .stat-value {
-    font-size: 30px;
-    font-weight: 800;
-    line-height: 1.2;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.stat-card.income {
+    background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
+    border-color: #c3fad5;
 }
 
 .stat-card.income .stat-value {
-    color: #10b981;
+    color: #2f9e44;
+}
+
+.stat-card.expense {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+    border-color: #ffc9c9;
 }
 
 .stat-card.expense .stat-value {
-    color: #ef4444;
+    color: #e03131;
+}
+
+.stat-card.balance {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-color: #bae6fd;
 }
 
 .stat-card.balance .stat-value {
-    color: #667eea;
+    color: #0c8599;
 }
 
 /* 캘린더 헤더 */
@@ -79,100 +71,96 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background: white;
-    padding: 20px 28px;
-    border-radius: 20px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    padding: 10px 14px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e0e0e0;
 }
 
 .calendar-header h2 {
-    font-size: 22px;
+    font-size: 15px;
     font-weight: 700;
-    color: #1f2937;
+    color: #333;
 }
 
 .nav-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: none;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    background: white;
+    border: 1px solid #ddd;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 18px;
-    color: white;
+    font-size: 14px;
+    color: #666;
     transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    flex-shrink: 0;
 }
 
 .nav-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background: #f5f5f5;
+    border-color: #999;
 }
 
 /* 요일 */
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 5px;
+    margin-bottom: 5px;
 }
 
 .weekday {
     text-align: center;
     font-weight: 700;
-    color: #6b7280;
-    padding: 12px 0;
-    font-size: 13px;
+    color: #666;
+    padding: 3px 0;
+    font-size: 10px;
+    width: 100%;
 }
 
-/* 캘린더 그리드 */
+/* 캘린더 그리드 - 완벽한 고정 */
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-bottom: 80px;
+    grid-auto-rows: 95px;
+    gap: 5px;
+    margin-bottom: 0;
+    width: 100%;
 }
 
 .calendar-day {
     background: white;
-    aspect-ratio: 1;
-    min-height: 130px;
-    padding: 14px;
-    border-radius: 16px;
+    width: 100% !important;
+    height: 95px !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 95px !important;
+    max-height: 95px !important;
+    padding: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow: hidden !important;
     position: relative;
-    overflow: hidden;
-}
-
-.calendar-day::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    opacity: 0;
-    transition: opacity 0.3s;
 }
 
 .calendar-day:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-}
-
-.calendar-day:hover::before {
-    opacity: 1;
+    border-color: #999;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
 }
 
 .calendar-day.empty {
     background: transparent;
     cursor: default;
+    border: none;
     box-shadow: none;
 }
 
@@ -180,70 +168,83 @@
     transform: none;
 }
 
-.calendar-day.empty::before {
-    display: none;
-}
-
+/* 날짜는 왼쪽 위 */
 .day-number {
-    font-size: 18px;
+    font-size: 12px;
     font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 12px;
+    color: #333;
+    flex-shrink: 0;
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 100%;
+    text-align: center;
 }
 
+/* 금액은 중앙 하단, 세로 배치 */
 .day-summary {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-    justify-content: center;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    align-items: center;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    width: 100%;
 }
 
 .summary-item {
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 14px;
+    padding: 4px 0;
+    border-radius: 0;
+    font-size: 10px;
     font-weight: 700;
     text-align: center;
-    transition: all 0.2s;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    width: 100%;
 }
 
 .summary-item.income {
-    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-    color: #065f46;
+    background: #d3f9d8;
+    color: #2f9e44;
 }
 
 .summary-item.expense {
-    background: linear-gradient(135deg, #fee2e2, #fecaca);
-    color: #991b1b;
+    background: #ffe3e3;
+    color: #e03131;
 }
 
 /* 플로팅 버튼 */
 .floating-add-btn {
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    width: 68px;
-    height: 68px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: absolute;
+    bottom: 28px;
+    right: 28px;
+    width: 30px;
+    height: 30px;
+    background: #495057;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 36px;
+    font-size: 26px;
     font-weight: 300;
     color: white;
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.5);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: all 0.3s;
     z-index: 999;
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1;
+    flex-shrink: 0;
 }
 
 .floating-add-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+    background: #343a40;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+    transform: scale(1.08);
 }
 
 .floating-add-btn:active {
@@ -257,7 +258,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0,0,0,0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -273,19 +274,19 @@
 
 .modal-content {
     background: white;
-    border-radius: 24px;
+    border-radius: 16px;
     width: 100%;
-    max-width: 560px;
+    max-width: 480px;
     max-height: 85vh;
     overflow-y: auto;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
     animation: slideUp 0.3s ease-out;
 }
 
 @keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(40px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -297,26 +298,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 28px;
-    border-bottom: 2px solid #f3f4f6;
-    background: linear-gradient(135deg, #667eea10, #764ba210);
+    padding: 18px 22px;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .modal-header h3 {
-    font-size: 19px;
+    font-size: 16px;
     font-weight: 700;
-    color: #1f2937;
+    color: #333;
 }
 
 .close-btn {
-    background: rgba(239, 68, 68, 0.1);
+    background: transparent;
     border: none;
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
-    color: #ef4444;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    color: #999;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
     transition: all 0.2s;
     display: flex;
     align-items: center;
@@ -325,256 +325,285 @@
 }
 
 .close-btn:hover {
-    background: rgba(239, 68, 68, 0.2);
-    transform: rotate(90deg);
+    background: #f5f5f5;
+    color: #333;
 }
 
-/* 일일 총액 표시 */
+/* 일일 총액 */
 .day-total-summary {
-    padding: 20px 28px;
-    background: #f9fafb;
-    border-bottom: 2px solid #f3f4f6;
+    padding: 14px 22px;
+    background: #fafafa;
+    border-bottom: 1px solid #e0e0e0;
     display: flex;
-    gap: 12px;
+    gap: 10px;
 }
 
 .total-badge {
     flex: 1;
-    padding: 16px;
-    border-radius: 12px;
+    padding: 11px;
+    border-radius: 10px;
     text-align: center;
 }
 
 .total-badge.income {
-    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    background: #d3f9d8;
+    border: 1px solid #b2f2bb;
 }
 
 .total-badge.expense {
-    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    background: #ffe3e3;
+    border: 1px solid #ffc9c9;
 }
 
 .total-label {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
-    color: #6b7280;
-    margin-bottom: 6px;
-    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 3px;
 }
 
 .total-amount {
-    font-size: 20px;
-    font-weight: 800;
+    font-size: 17px;
+    font-weight: 700;
 }
 
 .total-badge.income .total-amount {
-    color: #065f46;
+    color: #2f9e44;
 }
 
 .total-badge.expense .total-amount {
-    color: #991b1b;
+    color: #e03131;
 }
 
 /* 거래 목록 */
 .existing-transactions {
-    padding: 20px 28px;
-    max-height: 280px;
+    padding: 14px 22px;
+    max-height: 380px;
     overflow-y: auto;
 }
 
 .existing-transactions::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
 }
 
 .existing-transactions::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 10px;
+    background: #ddd;
+    border-radius: 4px;
 }
 
 .transaction-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
-    background: white;
-    border: 2px solid #f3f4f6;
-    border-radius: 12px;
-    margin-bottom: 10px;
+    padding: 11px;
+    background: #fafafa;
+    border-radius: 8px;
+    margin-bottom: 7px;
     transition: all 0.2s;
+    border: 1px solid #e0e0e0;
 }
 
 .transaction-item:hover {
-    border-color: #e5e7eb;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background: #f0f0f0;
 }
 
 .transaction-category {
-    font-weight: 700;
-    color: #1f2937;
-    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    font-size: 13px;
 }
 
 .transaction-desc {
-    font-size: 13px;
-    color: #6b7280;
-    margin-top: 4px;
+    font-size: 11px;
+    color: #999;
+    margin-top: 2px;
 }
 
 .transaction-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
 }
 
 .transaction-amount {
-    font-size: 17px;
-    font-weight: 800;
-    padding: 8px 14px;
-    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 5px 11px;
+    border-radius: 6px;
 }
 
 .transaction-amount.income {
-    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-    color: #065f46;
+    background: #d3f9d8;
+    color: #2f9e44;
 }
 
 .transaction-amount.expense {
-    background: linear-gradient(135deg, #fee2e2, #fecaca);
-    color: #991b1b;
+    background: #ffe3e3;
+    color: #e03131;
 }
 
 .delete-btn-small {
-    background: #fef2f2;
-    color: #dc2626;
+    background: transparent;
+    color: #999;
     border: none;
-    padding: 7px 13px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
+    padding: 4px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .delete-btn-small:hover {
-    background: #fee2e2;
-    transform: scale(1.05);
+    background: #e0e0e0;
+    color: #333;
 }
 
 /* 입력 폼 */
 .transaction-form-modal {
-    padding: 24px 28px 28px;
-    border-top: 2px solid #f3f4f6;
+    padding: 18px 22px 22px;
 }
 
 .form-title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 16px;
+    color: #333;
+    margin-bottom: 14px;
 }
 
 .type-selector {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 18px;
+    gap: 9px;
+    margin-bottom: 14px;
 }
 
 .type-btn {
-    padding: 14px;
-    border: 2px solid transparent;
-    background: #f3f4f6;
-    border-radius: 12px;
+    padding: 11px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 700;
-    font-size: 15px;
+    font-weight: 600;
+    font-size: 13px;
     transition: all 0.2s;
-    color: #6b7280;
+    color: #666;
 }
 
 .type-btn.active.income {
-    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-    border-color: #10b981;
-    color: #065f46;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    background: #d3f9d8;
+    border-color: #51cf66;
+    color: #2f9e44;
 }
 
 .type-btn.active.expense {
-    background: linear-gradient(135deg, #fee2e2, #fecaca);
-    border-color: #ef4444;
-    color: #991b1b;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    background: #ffe3e3;
+    border-color: #ff6b6b;
+    color: #e03131;
 }
 
 .modal-input {
     width: 100%;
-    padding: 15px;
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    margin-bottom: 14px;
-    font-size: 15px;
+    padding: 11px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 11px;
+    font-size: 13px;
     transition: all 0.2s;
-    background: #f9fafb;
 }
 
 .modal-input:focus {
     outline: none;
-    border-color: #667eea;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: #495057;
+    box-shadow: 0 0 0 3px rgba(73,80,87,0.1);
 }
 
 .submit-btn-modal {
     width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 13px;
+    background: #495057;
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 8px;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    transition: all 0.2s;
 }
 
 .submit-btn-modal:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    background: #343a40;
+}
+
+.submit-btn-modal:active {
+    transform: scale(0.98);
+}
+
+/* 새 거래 추가 버튼 */
+.add-transaction-btn {
+    width: 100%;
+    padding: 13px;
+    background: #495057;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 14px;
+}
+
+.add-transaction-btn:hover {
+    background: #343a40;
 }
 
 /* 빈 상태 */
 .empty-state {
     text-align: center;
-    padding: 40px 20px;
-    color: #9ca3af;
-    font-size: 14px;
+    padding: 36px 16px;
+    color: #aaa;
+    font-size: 12px;
 }
 
 /* 반응형 */
 @media (max-width: 768px) {
-    .monthly-stats {
-        grid-template-columns: 1fr;
+    .calendar-header {
+        padding: 8px 12px;
+    }
+
+    .calendar-grid {
+        grid-auto-rows: 85px;
     }
 
     .calendar-day {
-        min-height: 100px;
-        padding: 10px;
+        height: 85px;
+        min-height: 85px;
+        max-height: 85px;
+        padding: 6px;
     }
 
     .day-number {
-        font-size: 16px;
+        font-size: 11px;
+        top: 6px;
+        left: 6px;
+    }
+
+    .day-summary {
+        bottom: 6px;
+        right: 6px;
     }
 
     .summary-item {
-        font-size: 12px;
-        padding: 6px 10px;
+        font-size: 9px;
+        padding: 2px 5px;
     }
 
     .floating-add-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 32px;
-        bottom: 24px;
-        right: 24px;
+        width: 30px;
+        height: 30px;
+        font-size: 24px;
+        bottom: 22px;
+        right: 22px;
     }
 }

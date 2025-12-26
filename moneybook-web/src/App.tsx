@@ -39,8 +39,10 @@ function App() {
                 </div>
             </header>
 
-            <div className="container">
-                <Calendar userId={user.uid} />
+            <div className="main-wrapper">
+                <div className="container">
+                    <Calendar userId={user.uid} />
+                </div>
             </div>
         </div>
     );

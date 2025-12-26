@@ -21,7 +21,9 @@ function Calendar({ userId }: CalendarProps) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
-    const [showModal, setShowModal] = useState(false);
+
+    // 모달 타입: 'view' (상세 보기) 또는 'add' (새 거래 추가)
+    const [modalType, setModalType] = useState<'view' | 'add' | null>(null);
 
     const [type, setType] = useState<'income' | 'expense'>('expense');
     const [amount, setAmount] = useState('');
@@ -99,19 +101,26 @@ function Calendar({ userId }: CalendarProps) {
         return { income, expense, balance: income - expense };
     };
 
+    // 날짜 클릭 → 상세 내역 보기
     const handleDateClick = (day: number) => {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         setSelectedDate(dateStr);
-        setShowModal(true);
-        setAmount('');
-        setDescription('');
+        setModalType('view');
     };
 
+    // 플로팅 버튼 클릭 → 새 거래 추가
     const handleFloatingBtnClick = () => {
         const today = new Date();
         const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         setSelectedDate(dateStr);
-        setShowModal(true);
+        setModalType('add');
+        setAmount('');
+        setDescription('');
+    };
+
+    // 상세 내역에서 새 거래 추가 버튼 클릭
+    const handleAddFromDetail = () => {
+        setModalType('add');
         setAmount('');
         setDescription('');
     };
@@ -137,6 +146,7 @@ function Calendar({ userId }: CalendarProps) {
 
             setAmount('');
             setDescription('');
+            setModalType('view'); // 추가 후 상세 보기로 전환
             alert('등록되었습니다!');
         } catch (error) {
             console.error('Error:', error);
@@ -152,6 +162,11 @@ function Calendar({ userId }: CalendarProps) {
                 console.error('삭제 실패:', error);
             }
         }
+    };
+
+    const closeModal = () => {
+        setModalType(null);
+        setSelectedDate(null);
     };
 
     const prevMonth = () => setCurrentDate(new Date(year, month - 1));
@@ -226,13 +241,13 @@ function Calendar({ userId }: CalendarProps) {
                 +
             </button>
 
-            {/* 모달 */}
-            {showModal && selectedDate && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
+            {/* 모달 - 상세 내역 보기 */}
+            {modalType === 'view' && selectedDate && (
+                <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h3>{selectedDate} 거래</h3>
-                            <button onClick={() => setShowModal(false)} className="close-btn">✕</button>
+                            <h3>{selectedDate} 거래 내역</h3>
+                            <button onClick={closeModal} className="close-btn">✕</button>
                         </div>
 
                         {/* 일일 총액 */}
@@ -282,12 +297,25 @@ function Calendar({ userId }: CalendarProps) {
                                     </div>
                                 ))
                             )}
+
+                            <button onClick={handleAddFromDetail} className="add-transaction-btn">
+                                새 거래 추가
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* 모달 - 새 거래 추가 */}
+            {modalType === 'add' && selectedDate && (
+                <div className="modal-overlay" onClick={closeModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>{selectedDate} 새 거래 추가</h3>
+                            <button onClick={closeModal} className="close-btn">✕</button>
                         </div>
 
-                        {/* 새 거래 입력 */}
                         <form onSubmit={handleSubmit} className="transaction-form-modal">
-                            <div className="form-title">새 거래 추가</div>
-
                             <div className="type-selector">
                                 <button
                                     type="button"
